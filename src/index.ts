@@ -2,6 +2,8 @@ import { config } from '@/config';
 import type { Request, Response } from 'express';
 import express from 'express';
 import authRouter from './modules/auth/authRoutes';
+import errorHandlerMiddleware from './middlewares/errorHandlerMiddleware';
+import notFoundMiddleware from './middlewares/notFoundMiddleware';
 
 const app = express();
 const PORT = Number(config.PORT) || 3000;
@@ -19,13 +21,11 @@ app.get('/', (req: Request, res: Response) => {
 
 app.use('/auth', authRouter);
 
-// Example of importing a router for a specific path
-// app.use('/users', usersRouter);
+// catch 404 and forward to error handler
+app.use(notFoundMiddleware);
 
 // Error handling middleware
-app.use((req: Request, res: Response) => {
-  res.status(500).send('Something broke!');
-});
+app.use(errorHandlerMiddleware);
 
 // Start server
 app.listen(PORT, () => {

@@ -1,5 +1,6 @@
 // validationMiddleware.ts
 import type { RegisterRequest } from '@/modules/auth/authTypes';
+import { createError } from '@/utils/errors';
 import type { Response, NextFunction } from 'express';
 import { ZodError, type AnyZodObject } from 'zod';
 
@@ -13,11 +14,8 @@ export const validate = (schema: AnyZodObject) => (req: RegisterRequest, res: Re
     next();
   } catch (e) {
     if (e instanceof ZodError) {
-      // e is of type ZodError
-      res.status(400).json({ message: 'Validation error', errors: e.errors });
-    } else {
-      // Handle other types of unexpected errors
-      res.status(500).json({ message: 'Server error' });
+      const error = createError('Validation error', 400, { errors: e.errors });
+      next(error);
     }
   }
 };

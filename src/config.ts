@@ -12,4 +12,5 @@ export const config = {
   PORT: getEnvVariable('PORT'),
   DATABASE_URL: getEnvVariable('DATABASE_URL'),
   JWT_SECRET: getEnvVariable('JWT_SECRET'),
+  NODE_ENV: getEnvVariable('NODE_ENV'),
 } as const;
