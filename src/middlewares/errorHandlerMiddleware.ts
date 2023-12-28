@@ -2,7 +2,8 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { config } from '@/config';
-import type { CustomError } from '@/utils/errors';
+import { SERVER_ERROR, type CustomError } from '@/utils/errors';
+import { PrismaClientInitializationError, PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import type { Request, Response, NextFunction } from 'express';
 
 /* 
@@ -19,11 +20,19 @@ const errorHandlerMiddleware = <T>(err: CustomError<T>, req: Request, res: Respo
 
   // Determine the status code: Use the status from the error if available, or default to 500
   const statusCode = err.status || 500;
-  res.status(statusCode);
+  let message = err.message || SERVER_ERROR;
+
+  if (err instanceof PrismaClientInitializationError) {
+    // eslint-disable-next-line no-console
+    console.error('[Database]: PrismaClientInitializationError');
+    if (config.NODE_ENV !== 'development') {
+      message = SERVER_ERROR;
+    }
+  }
 
   // Send a JSON response
-  res.json({
-    message: err.message,
+  res.status(statusCode).json({
+    message,
     // Optionally include additional data or stack trace in development environment
     // ...(config.NODE_ENV === 'development' && { stack: err.stack }),
     ...(err.data && { data: err.data }),

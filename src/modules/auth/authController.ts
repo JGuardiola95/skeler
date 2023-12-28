@@ -22,15 +22,19 @@ export const register = async (req: RegisterRequest, res: Response, next: NextFu
   }
 };
 
-export const login = async (req: LoginRequest, res: Response) => {
-  const { email, password } = req.body;
-  const user = await validateUser(email, password);
+export const login = async (req: LoginRequest, res: Response, next: NextFunction) => {
+  try {
+    const { email, password } = req.body;
+    const user = await validateUser(email, password);
 
-  if (!user) {
-    res.status(401).json({ message: 'Invalid credentials' });
-    return;
+    if (!user) {
+      res.status(401).json({ message: 'Invalid credentials' });
+      return;
+    }
+
+    const token = createJWT(user);
+    res.json({ token });
+  } catch (error) {
+    next(error);
   }
-
-  const token = createJWT(user);
-  res.json({ token });
 };
