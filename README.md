@@ -1,6 +1,6 @@
 # Node.js API Project Skeleton
 
-This repository provides a skeleton for Node.js API projects, integrating best practices and essential tools for robust API development. It's configured with Express, TypeScript, ESLint, Prettier, and other tools to streamline the development process.
+This repository provides a skeleton for my Node.js API personal projects. It's configured with Express, TypeScript, ESLint, Prettier, and other tools to streamline the development process.
 
 ## Features
 
