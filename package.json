@@ -4,12 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon --exec node -r module-alias/register -r ts-node/register --env-file=.env src/index.ts",
-    "start": "node -r ts-node/register -r module-alias/register --env-file=.env src"
+    "start": "pnpm run build && pnpm run serve",
+    "serve": "node -r ts-node/register -r module-alias/register --env-file=.env src",
+    "build": "pnpm run clean && tsc",
+    "clean": "rimraf ./build",
+    "dev": "nodemon --exec node -r module-alias/register -r ts-node/register --env-file=.env src/index.ts"
   },
   "_moduleAliases": {
-    "@": "./src/"
+    "@": "./build"
   },
   "keywords": [],
   "author": "",
@@ -36,6 +38,7 @@
     "bcrypt": "^5.1.1",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.2",
+    "rimraf": "^5.0.5",
     "zod": "^3.22.4"
   }
 }
