@@ -1,0 +1,8 @@
+version: '3.9'
+services:
+  skeler-api:
+    container_name: skeler-api
+    build:
+      context: .
+    ports:
+      - '3333:3333'

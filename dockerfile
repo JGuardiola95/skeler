@@ -1,3 +1,4 @@
+# THIS DOCKERFILE IS EXCLUSIVELY FOR PRODUCTION
 # Build stage
 FROM node:20.10.0-alpine as build-stage
 
@@ -28,9 +29,9 @@ WORKDIR /home/node
 COPY --from=build-stage /home/node/build /home/node/build
 COPY --from=build-stage /home/node/node_modules /home/node/node_modules
 COPY --from=build-stage /home/node/package.json /home/node/package.json
-COPY --from=build-stage /home/node/.env /home/node/.env
+COPY --from=build-stage /home/node/.env.prod /home/node/.env.prod
 
 
 EXPOSE 3333
 
-CMD ["node", "-r", "module-alias/register", "--env-file=.env", "build/index.js"]
+CMD ["node", "-r", "module-alias/register", "--env-file=.env.prod", "build/index.js"]

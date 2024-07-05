@@ -1,3 +1,4 @@
+import './utils/setModuleAlias';
 import { config } from '@/config';
 import type { Request, Response } from 'express';
 import express from 'express';
